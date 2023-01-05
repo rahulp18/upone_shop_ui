@@ -1,0 +1,10 @@
+export { default as Welcome } from "./Welcome";
+export { default as Login } from "./Login";
+export { default as Staf } from "./Staf";
+export { default as Appointments } from "./Appointments";
+export { default as VerifyOtp } from "./VerifyOtp";
+export { default as ChooseLocation } from "./ChooseLocation";
+export { default as Home } from "./Home.jsx";
+export { default as SignUp } from "./SignUp";
+export { default as Profile } from "./Profile";
+export { default as ServiceDetail } from "./ServiceDetail";
