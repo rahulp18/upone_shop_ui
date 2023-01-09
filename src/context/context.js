@@ -11,6 +11,7 @@ const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
+  const [stafData, setstafData] = useState([]);
   const [token, setToken] = useState(
     localStorage.getItem("token") ? localStorage.getItem("token") : null
   );
@@ -40,7 +41,18 @@ const AppProvider = ({ children }) => {
       }
     }
   };
-
+  const fetchAllStafs = async () => {
+    try {
+      setLoading(true);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const res = await axios.get(`${url}/staf`);
+      setstafData(res.data.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
   return (
     <AppContext.Provider
       value={{
@@ -55,6 +67,8 @@ const AppProvider = ({ children }) => {
         setToken,
         getCurrentUser,
         logOut,
+        fetchAllStafs,
+        stafData,
       }}
     >
       {children}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
-import { MobileNumberInput } from "../components";
+import { Loading, MobileNumberInput } from "../components";
 import axios from "axios";
 import { useGlobalContext } from "../context/context";
 import { toast, Toaster } from "react-hot-toast";
@@ -17,28 +17,26 @@ const SignUp = () => {
     useGlobalContext();
   const [formData, setFormData] = useState(initialState);
   const navigate = useNavigate();
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    try {
-      setLoading(true);
-      const res = await axios.post(`${url}/shop/register`, {
-        ...formData,
-        image: [],
-      });
-      console.log(res);
-      setCurrentUserId(res.data.data.userId);
-      navigate("/verifyOtp");
-      setLoading(false);
-    } catch (error) {
-      console.log(error?.response?.data?.message);
-      setLoading(false);
-      toast.error(error?.response?.data?.message);
-    }
-  };
+  const [images, setImages] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
+
+  // Handle Image
+
+  const handleImages = (e) => {
+    const files = Array.from(e.target.files);
+
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setImages((oldArray) => [...oldArray, reader.result]);
+      };
+    });
+  };
+
   const handleImageChange = (e) => {
-    console.log(e.target.files);
+    handleImages(e);
     if (e.target.files) {
       const filesArray = Array.from(e.target.files).map((file) =>
         URL.createObjectURL(file)
@@ -52,6 +50,26 @@ const SignUp = () => {
       );
     }
   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+      const res = await axios.post(`${url}/shop/register`, {
+        ...formData,
+        images,
+      });
+      console.log(res);
+      setCurrentUserId(res.data.data.userId);
+      navigate("/verifyOtp");
+      setLoading(false);
+    } catch (error) {
+      console.log(error?.response?.data?.message);
+      console.log(error);
+      setLoading(false);
+      toast.error(error?.response?.data?.message);
+    }
+  };
   console.log(selectedFiles);
   const renderPhotos = (source) => {
     console.log("source: ", source);
@@ -59,7 +77,7 @@ const SignUp = () => {
       return (
         <img
           src={photo}
-          alt=""
+          alt="hm"
           key={photo}
           className="w-14 h-14 object-cover"
         />
@@ -114,14 +132,14 @@ const SignUp = () => {
           <div className="mt-4">
             <input
               type="file"
-              id="file"
+              id="images"
               multiple
               onChange={handleImageChange}
               className="hidden"
             />
             <div className="label-holder">
               <label
-                htmlFor="file"
+                htmlFor="images"
                 className="btn capitalize  text-center gap  btn-sm bg-sky-600 border-none"
               >
                 <BsCameraFill className="mx-1" /> Choose Image
@@ -132,7 +150,7 @@ const SignUp = () => {
             </div>
           </div>
           <button className="btn btn-outline  w-full text-[16px] py-2 max-w-sm  mt-6">
-            Get Otp
+            {loading ? <Loading /> : "Get Otp"}
           </button>
         </form>
         <h1 className="text-sm font-roboto text-gray-400">

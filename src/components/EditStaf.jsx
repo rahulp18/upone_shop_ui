@@ -1,16 +1,32 @@
 import React, { useState } from "react";
-
-const EditStaf = () => {
+import { useGlobalContext } from "../context/context";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+const EditStaf = ({ staf }) => {
   const initialState = {
-    name: "",
-    phone: "",
-    image: "",
-    experience: "",
+    name: staf.name,
+    number: staf.number,
+
+    experience: staf.experience,
   };
   const [formData, setFormData] = useState(initialState);
-
+  const { url, token, fetchAllStafs } = useGlobalContext();
   const handleChange = (e) => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const updateStaf = async (e, id) => {
+    try {
+      e.preventDefault();
+      const res = await axios.put(`${url}/staf/${id}`, { ...formData });
+      console.log(res.data);
+      toast.success("Data edited successfully");
+      fetchAllStafs();
+    } catch (error) {
+      console.log(error);
+      toast.error("Error updating staf");
+    }
   };
   return (
     <div>
@@ -25,7 +41,7 @@ const EditStaf = () => {
           </label>
           <h3 className="text-lg font-bold">Update Your Staf Info</h3>
           <div className="mt-2">
-            <form>
+            <form onSubmit={(e) => updateStaf(e, staf._id)}>
               <div className="flow-root">
                 <div className="form-group pb-3">
                   <label
@@ -53,17 +69,17 @@ const EditStaf = () => {
                   </label>
                   <input
                     type="text"
-                    name="phone"
+                    name="number"
                     required
-                    value={formData.phone}
+                    value={formData.number}
                     onChange={handleChange}
                     className="input input-bordered text-black  w-full max-w-xs input-sm"
-                    id="phone"
+                    id="number"
                   ></input>
                 </div>
                 <div className="form-group pb-3">
                   <label
-                    for="phone"
+                    for="experience"
                     className="block text-sm font-semibold text-gray-800"
                   >
                     Experience<span className="text-red-600">*</span>
@@ -77,24 +93,6 @@ const EditStaf = () => {
                     className="input input-bordered text-black  w-full max-w-xs input-sm"
                     id="experience"
                   ></input>
-                </div>
-                <div className="form-group pb-3">
-                  <label
-                    for="image"
-                    className="block text-sm font-semibold text-gray-800"
-                  >
-                    Choose profile <span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    type="file"
-                    name="image"
-                    // value={formData.email}
-                    required
-                    // onChange={(e) =>
-                    //   setFormData({ ...formData, email: e.target.value })
-                    // }
-                    className="text-xs"
-                  />
                 </div>
               </div>
               <div className="flex  justify-end gap-3 mt-5 items-center">
