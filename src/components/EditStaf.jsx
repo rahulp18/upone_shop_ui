@@ -2,27 +2,33 @@ import React, { useState } from "react";
 import { useGlobalContext } from "../context/context";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-const EditStaf = ({ staf }) => {
+const EditStaf = ({ staf, fetchStafInfo }) => {
+  console.log(staf);
   const initialState = {
     name: staf.name,
     number: staf.number,
-
+    skills: staf.skills,
     experience: staf.experience,
   };
   const [formData, setFormData] = useState(initialState);
-  const { url, token, fetchAllStafs } = useGlobalContext();
+  const { url, token } = useGlobalContext();
   const handleChange = (e) => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  const updateStaf = async (e, id) => {
+  const handleSkills = (e) => {
+    const array = e.target.value.trim().toLowerCase().split(",");
+    setFormData({ ...formData, skills: array });
+  };
+  console.log(formData);
+  const updateStaf = async (e) => {
     try {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       e.preventDefault();
-      const res = await axios.put(`${url}/staf/${id}`, { ...formData });
+      const res = await axios.put(`${url}/staf/${staf._id}`, { ...formData });
       console.log(res.data);
       toast.success("Data edited successfully");
-      fetchAllStafs();
+      fetchStafInfo();
     } catch (error) {
       console.log(error);
       toast.error("Error updating staf");
@@ -30,11 +36,11 @@ const EditStaf = ({ staf }) => {
   };
   return (
     <div>
-      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+      <input type="checkbox" id="editStaf" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box relative">
           <label
-            htmlFor="my-modal-3"
+            htmlFor="editStaf"
             className="btn btn-sm btn-circle absolute right-2 top-2"
           >
             ✕
@@ -93,6 +99,23 @@ const EditStaf = ({ staf }) => {
                     className="input input-bordered text-black  w-full max-w-xs input-sm"
                     id="experience"
                   ></input>
+                </div>
+                <div className=" flex flex-col gap-2 w-full">
+                  <label
+                    for="skills"
+                    className="block text-sm font-semibold text-gray-800"
+                  >
+                    Expertise in <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="skills"
+                    required
+                    value={formData.skills.toString()}
+                    onChange={handleSkills}
+                    placeholder="spa,haicut,facial (write in comas) "
+                    className="input input-bordered text-black  w-full max-w-xs input-sm"
+                  />
                 </div>
               </div>
               <div className="flex  justify-end gap-3 mt-5 items-center">

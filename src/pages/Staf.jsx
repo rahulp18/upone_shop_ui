@@ -10,6 +10,7 @@ const Staf = () => {
     image: "",
     number: "",
     experience: "",
+    skills: [],
   };
 
   const { url, setLoading, loading, token, fetchAllStafs, stafData } =
@@ -18,18 +19,22 @@ const Staf = () => {
   const [image, setImage] = useState([]);
   const [loadingStaf, setLoadingStaf] = useState(false);
 
+  const handleSkills = (e) => {
+    const array = e.target.value.trim().toLowerCase().split(",");
+    setStaf({ ...staf, skills: array });
+  };
   const handleOnChange = (e) => {
     setStaf({ ...staf, [e.target.name]: e.target.value });
   };
 
   const addStaf = async (e) => {
     e.preventDefault();
-
+    console.log(staf);
     try {
       setLoadingStaf(true);
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       const res = await axios.post(`${url}/staf`, staf);
-
+      console.log(res);
       toast.success("Staf Addes successfully");
       setLoadingStaf(false);
       setStaf(initialState);
@@ -72,7 +77,7 @@ const Staf = () => {
 
   return (
     <Layout select="stafs">
-      <main>
+      <main className="pb-5">
         <Toaster />
         <div className="px-4 py-2 relative">
           <div className="flex items-center justify-start">
@@ -161,6 +166,23 @@ const Staf = () => {
                   className="input input-bordered text-black  w-full max-w-xs input-sm"
                 />
               </div>
+              <div className=" flex flex-col gap-2 w-full">
+                <label
+                  for="skills"
+                  className="block text-sm font-semibold text-gray-800"
+                >
+                  Expertise in <span className="text-red-600">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="skills"
+                  required
+                  value={staf.skills.toString()}
+                  onChange={handleSkills}
+                  placeholder="spa,haicut,facial (write in comas) "
+                  className="input input-bordered text-black  w-full max-w-xs input-sm"
+                />
+              </div>
               <div className="flex items-center mt-2 justify-start">
                 <button className="btn btn-sm bg-sky-600 border-none ">
                   {loadingStaf ? <Loading /> : "Add Staf"}
@@ -170,7 +192,7 @@ const Staf = () => {
           </div>
           <div className="mt-5">
             <h1 className="text-md font-semibold text-black">Stafs Info</h1>
-            <div>
+            <div className="py-6">
               {stafData.length === 0 ? (
                 <h1 className="text-md font-semibold">Add staf to grow !</h1>
               ) : (

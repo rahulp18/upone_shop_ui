@@ -1,6 +1,8 @@
 import React from "react";
+import { useGlobalContext } from "../context/context";
 
 const PastAppointmentTable = ({ componentRef }) => {
+  const { appoinemts } = useGlobalContext();
   return (
     <div className="overflow-x-scroll md:max-w-full max-w-xs">
       <div className="overflow-x-auto">
@@ -17,33 +19,17 @@ const PastAppointmentTable = ({ componentRef }) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th>1</th>
-              <td>Teddie Duerden</td>
-              <td>9777160598 </td>
-              <td>Hair Cut</td>
-              <td>Chandan Hema</td>
-              <td>120</td>
-              <td>20/03/2023</td>
-            </tr>
-            <tr>
-              <th>2</th>
-              <td>Teddie Duerden</td>
-              <td>9777160598 </td>
-              <td>Hair Cut</td>
-              <td>Chandan Hema</td>
-              <td>120</td>
-              <td>20/03/2023</td>
-            </tr>
-            <tr>
-              <th>3</th>
-              <td>Teddie Duerden</td>
-              <td>9777160598 </td>
-              <td>Hair Cut</td>
-              <td>Chandan Hema</td>
-              <td>120</td>
-              <td>20/03/2023</td>
-            </tr>
+            {appoinemts?.map((item, index) => (
+              <tr key={index}>
+                <th>{index + 1}</th>
+                <td>{item.name}</td>
+                <td>{item.phone}</td>
+                <td>{item?.services.toString()}</td>
+                <td>Chandan Hema</td>
+                <td>120</td>
+                <td>20/03/2023</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 import { BsCameraFill } from "react-icons/bs";
 import { MdEdit } from "react-icons/md";
 import {
@@ -9,13 +11,40 @@ import {
   ShopCarousal,
 } from "../components";
 import EditShop from "../components/EditShop";
+import { useGlobalContext } from "../context/context";
 
 const Profile = () => {
+  const { token, url, setLoading, loading, checkToken, getShopOwoner, owoner } =
+    useGlobalContext();
+  const [services, setServices] = useState([]);
+
+  const fetchService = async () => {
+    try {
+      setLoading(true);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const response = await axios.get(`${url}/service/saloon`);
+      setServices(response.data.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    checkToken();
+    getShopOwoner();
+    fetchService();
+  }, []);
+
   return (
     <Layout select="profile">
       <main>
+        <Toaster />
         <div className="relative">
-          <ShopCarousal />
+          {owoner?.images.length !== 0 && (
+            <ShopCarousal slides={owoner?.images} />
+          )}
+
           <div className="flex items-center justify-end">
             <label htmlFor="editShop">
               <div className="p-1 bg-sky-600 z-50 rounded-full w-7 h-7  text-white flex items-center justify-center cursor-pointer">
@@ -23,18 +52,20 @@ const Profile = () => {
                 <MdEdit className="text-xl font-bold" />
               </div>
             </label>
-            <EditShop />
+            <EditShop owoner={owoner} />
           </div>
         </div>
         <div className="mt-2 px-4 ">
           <h1 className="text-md font-normal text-gray-700">
             Shop name :{" "}
-            <span className="text-black font-semibold capitalize">To & Do</span>
+            <span className="text-black font-semibold capitalize">
+              {owoner?.shopName}
+            </span>
           </h1>
           <h1 className="text-md font-normal text-gray-700">
-            Owoner Name :{" "}
+            Number :{" "}
             <span className="text-black font-semibold capitalize">
-              Rahul Pradhan
+              {owoner?.number}
             </span>
           </h1>
           <h1 className="text-md font-normal text-gray-700">
@@ -53,13 +84,21 @@ const Profile = () => {
                 <label htmlFor="my-modal-5">Add</label>
               </button>
             </div>
-            <CreateServices />
-            <div className="mt-5">
+            <CreateServices fetchService={fetchService} />
+            <div className="mt-5 py-5">
               <h1 className="text-md font-semibold">Services</h1>
               <div className="flex items-center justify-center flex-col mt-3 gap-5">
-                {[1, 2, 3, 4, 5].map((item) => (
-                  <ServiceCard key={item} />
-                ))}
+                {services.length === 0 ? (
+                  <h1 className="text-md font-semibold">No services !</h1>
+                ) : (
+                  services.map((item, index) => (
+                    <ServiceCard
+                      key={index}
+                      data={item}
+                      fetchService={fetchService}
+                    />
+                  ))
+                )}
               </div>
             </div>
           </div>

@@ -4,6 +4,7 @@ export { default as Layout } from "./Layout";
 export { default as Clock } from "./Clock";
 export { default as StafTable } from "./StafTable";
 export { default as EditService } from "./EditService";
+export { default as EditStaf } from "./EditStaf";
 
 export { default as AppointmentCard } from "./AppointmentCard";
 export { default as Upcoming } from "./Upcoming";

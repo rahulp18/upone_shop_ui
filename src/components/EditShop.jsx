@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 
-const EditShop = () => {
+const EditShop = ({ owoner }) => {
   const initialState = {
-    name: "",
-    phone: "",
+    shopName: owoner?.shopName,
+    phone: owoner?.number,
     image: "",
-    location: "",
   };
   const [formData, setFormData] = useState(initialState);
 

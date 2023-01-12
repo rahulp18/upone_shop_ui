@@ -1,16 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { Layout, Past, Pendings, Upcoming } from "../components";
-
+import { useGlobalContext } from "../context/context";
+import { Toaster } from "react-hot-toast";
 const Appointments = () => {
-  const [active, setActive] = useState("upcoming");
-
+  const [active, setActive] = useState("pending");
+  const { fetchAppointments, appoinemts, fetchSingleStaf } = useGlobalContext();
   const activeStyle = "bg-[#10143d] text-white";
   const normalStyle = "text-black bg-transition";
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchAppointments(active);
+  }, [active]);
+  console.log(appoinemts);
   return (
     <Layout select="appointments">
+      <Toaster />
       <div className="px-4 py-2">
         <div className="flex items-center justify-start gap-3">
           <div className="p-1 bg-sky-600 z-50 rounded-full w-7 h-7  top-1 left-1 text-white flex items-center justify-center cursor-pointer">
@@ -27,17 +34,17 @@ const Appointments = () => {
         <div className="flex justify-around items-center mt-9 ">
           <button
             className={` px-4 py-1 rounded-lg   capitalize ${
-              active === "upcoming" ? activeStyle : normalStyle
+              active === "approved" ? activeStyle : normalStyle
             } `}
-            onClick={() => setActive("upcoming")}
+            onClick={() => setActive("approved")}
           >
             Upcoming
           </button>
           <button
             className={` px-4 py-1 rounded-lg   capitalize ${
-              active === "past" ? activeStyle : normalStyle
+              active === "completed" ? activeStyle : normalStyle
             } `}
-            onClick={() => setActive("past")}
+            onClick={() => setActive("completed")}
           >
             Past
           </button>
@@ -51,9 +58,9 @@ const Appointments = () => {
           </button>
         </div>
         <div className="mt-6">
-          {active === "upcoming" ? (
+          {active === "approved" ? (
             <Upcoming />
-          ) : active === "past" ? (
+          ) : active === "completed" ? (
             <Past />
           ) : (
             <Pendings />

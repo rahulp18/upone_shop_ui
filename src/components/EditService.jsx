@@ -1,16 +1,39 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { useGlobalContext } from "../context/context";
+import Loading from "./Loading";
 
-const EditService = () => {
+const EditService = ({ serviceInfo, fetchServiceInfo }) => {
   const initialState = {
-    serviceName: "",
-    price: "",
-    image: "",
+    serviceName: serviceInfo?.serviceName,
+    price: serviceInfo?.price,
+    status: serviceInfo?.status,
   };
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
-
+  const { url, token } = useGlobalContext();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const res = await axios.put(
+        `${url}/service/${serviceInfo._id}`,
+        formData
+      );
+      console.log(res);
+      setLoading(false);
+      fetchServiceInfo();
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <input type="checkbox" id="editService" className="modal-toggle" />
@@ -24,7 +47,7 @@ const EditService = () => {
           </label>
           <h3 className="text-lg font-bold">Edit Services</h3>
           <div className="mt-2">
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="flow-root">
                 <div className="form-group pb-3">
                   <label
@@ -64,23 +87,26 @@ const EditService = () => {
                 </div>
                 <div className="form-group pb-3">
                   <label
-                    for="image"
+                    for="status"
                     className="block text-sm font-semibold text-gray-800"
                   >
-                    Image<span className="text-red-600">*</span>
+                    Status<span className="text-red-600">*</span>
                   </label>
-                  <input
-                    type="file"
-                    name="experience"
-                    required
-                    className="text-xs"
-                    id="image"
-                  ></input>
+                  <select
+                    name="status"
+                    id="status"
+                    value={formData.status}
+                    onChange={handleChange}
+                  >
+                    <option value="">Select</option>
+                    <option value="active">Open</option>
+                    <option value="inactive">Closed</option>
+                  </select>
                 </div>
               </div>
               <div className="flex  justify-end gap-3 mt-5 items-center">
                 <button type="submit" className=" btn btn-sm ">
-                  Update
+                  {loading ? <Loading /> : "Update"}
                 </button>
 
                 <button

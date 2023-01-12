@@ -8,3 +8,5 @@ export { default as Home } from "./Home.jsx";
 export { default as SignUp } from "./SignUp";
 export { default as Profile } from "./Profile";
 export { default as ServiceDetail } from "./ServiceDetail";
+export { default as StafDetail } from "./StafDetail";
+export { default as CollectOverView } from "./CollectOverView";

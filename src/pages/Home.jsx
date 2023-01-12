@@ -1,12 +1,54 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Layout,
   Clock,
   StafTable,
   ServiceCard,
   AppointmentCard,
+  Loading,
 } from "../components";
+import { useGlobalContext } from "../context/context";
 const Home = () => {
+  const { checkToken, token, url, loading, setLoading } = useGlobalContext();
+  const [activeServices, setActiveServices] = useState([]);
+  const [activeStafs, setActiveStafs] = useState([]);
+  const navigate = useNavigate();
+
+  const fetchActiveStafs = async () => {
+    try {
+      setLoading(true);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const res = await axios.get(`${url}/staf/saloon/active`);
+      setActiveStafs(res.data.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  const fetchActiveService = async () => {
+    try {
+      setLoading(true);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const res = await axios.get(`${url}/service/saloon/active`);
+      setActiveServices(res.data.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    checkToken(navigate);
+    fetchActiveService();
+    fetchActiveStafs();
+  }, []);
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <Layout select="dashboard">
       <main>
@@ -33,7 +75,6 @@ const Home = () => {
               <p className="text-lg font-semibold">5</p>
             </div>
           </div>
-          {/* Tpdays Appointment */}
 
           {/* Staf List */}
           <div className="mt-5">
@@ -41,7 +82,7 @@ const Home = () => {
               My Stafs
             </h1>
             <div className="mt-5">
-              <StafTable />
+              <StafTable activeStafs={activeStafs} />
             </div>
           </div>
           {/* Services */}
@@ -49,10 +90,18 @@ const Home = () => {
             <h1 className="text-lg text-black font-semibold font-poppins">
               Our Services
             </h1>
-            <div className="flex flex-col gap-3 mt-5">
-              {[1, 2, 3, 4, 5].map((item) => (
-                <ServiceCard key={item} />
-              ))}
+            <div className="flex flex-wrap gap-3 mt-5">
+              {activeServices.length === 0 ? (
+                <h1 className="text-md font-semibold ">No services active</h1>
+              ) : (
+                activeServices?.map((service, index) => (
+                  <ServiceCard
+                    key={index}
+                    data={service}
+                    fetchActiveService={fetchActiveService}
+                  />
+                ))
+              )}
             </div>
           </div>
           <div className="mt-5">

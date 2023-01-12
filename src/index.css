@@ -19,3 +19,12 @@ input{
     height: 100vh;
     grid-template-rows:  1fr auto;
     }
+
+    .carousel{
+        display: flex;
+        justify-content: center;
+    }
+    .carousel .slide{
+        height: 250px;
+        object-fit: cover;
+    }

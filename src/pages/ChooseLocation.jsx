@@ -8,7 +8,7 @@ import { useGlobalContext } from "../context/context";
 import { Loading } from "../components";
 const ChooseLocation = () => {
   const navigate = useNavigate();
-  const { token, url, setLoading, loading } = useGlobalContext();
+  const { token, url, setLoading, loading, checkToken } = useGlobalContext();
   const [currentLocation, setCurrentLocation] = useState({
     lat: "",
     lng: "",
@@ -37,7 +37,7 @@ const ChooseLocation = () => {
         },
       });
       console.log(res);
-      navigate("/dashboard");
+      navigate("/overview");
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -45,8 +45,10 @@ const ChooseLocation = () => {
     }
   };
   useEffect(() => {
+    checkToken();
     getLocation();
   }, []);
+
   return (
     <div className="h-screen bg-white px-6 py-5">
       <div className="flex gap-3 items-center justify-start">

@@ -1,22 +1,45 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 import { MdEdit } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
-import { CreateServices, EditService } from "../components";
+import { useNavigate, useParams } from "react-router-dom";
+import { CreateServices, EditService, Loading } from "../components";
+import { useGlobalContext } from "../context/context";
 const ServiceDetail = () => {
+  const { url, token, setLoading, loading } = useGlobalContext();
   const navigate = useNavigate();
+  const [serviceInfo, setServiceInfo] = useState(null);
+  const id = useParams().id;
+  const fetchServiceInfo = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${url}/service/${id}`);
+      setLoading(false);
+      setServiceInfo(res.data.data);
+      console.log(res);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchServiceInfo();
+  }, []);
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div className="h-screen">
       <div className="p-1 bg-white z-50 rounded-full w-7 h-7 absolute top-1 left-1 text-black flex items-center justify-center cursor-pointer">
         <FiArrowLeft
           className="text-xl font-bold"
-          onClick={() => navigate(`/dashboard`)}
+          onClick={() => navigate(`/profile`)}
         />
       </div>
       <div className="w-[100%] h-[216px] bg-black group relative  overflow-hidden ">
         <img
           className="w-full h-full object-cover opacity-75"
-          src="https://images.pexels.com/photos/853427/pexels-photo-853427.jpeg?cs=srgb&dl=pexels-delbeautybox-853427.jpg&fm=jpg"
+          src={serviceInfo?.image}
           alt="images"
         />
         <div className="p-1 bg-sky-600 z-50 rounded-full w-7 h-7 absolute bottom-1 right-1 text-white flex items-center justify-center cursor-pointer">
@@ -25,15 +48,23 @@ const ServiceDetail = () => {
             <MdEdit className="text-xl font-bold" />
           </label>
         </div>
-        <EditService />
+        <EditService
+          serviceInfo={serviceInfo}
+          fetchServiceInfo={fetchServiceInfo}
+        />
       </div>
       <div className="mt-4 px-4">
         <h1 className="text-md font-normal text-gray-700">
           Service Name :{" "}
-          <span className="font-semibold text-black">Span & Hair Cut</span>{" "}
+          <span className="font-semibold text-black">
+            {serviceInfo?.serviceName}
+          </span>{" "}
         </h1>
         <h1 className="text-md font-normal text-gray-700">
-          Price : <span className="font-semibold text-black">₹ 120</span>{" "}
+          Price :{" "}
+          <span className="font-semibold text-black">
+            ₹ {serviceInfo?.price}
+          </span>{" "}
         </h1>
       </div>
     </div>
