@@ -27,13 +27,13 @@ const CardAppointment = ({ data }) => {
     console.log(status);
     try {
       setUpdating(true);
-      const res = await axios.put(`${url}/appointments/${id}`, {
+      const res = await axios.put(`${url}/appointments/update/${id}`, {
         status: status,
       });
       toast.success(`${status} request`);
       console.log(res);
       setUpdating(false);
-      fetchAppointments("pending");
+      fetchAppointments("approved");
     } catch (error) {
       console.log(error);
       setUpdating(false);

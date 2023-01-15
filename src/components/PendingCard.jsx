@@ -19,7 +19,7 @@ const PendingCard = ({ data }) => {
     console.log(status);
     try {
       setUpdating(true);
-      const res = await axios.put(`${url}/appointments/${id}`, {
+      const res = await axios.put(`${url}/appointments/update/${id}`, {
         status: status,
       });
       toast.success(`${status} request`);
