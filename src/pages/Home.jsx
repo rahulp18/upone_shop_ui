@@ -9,10 +9,22 @@ import {
   AppointmentCard,
   Loading,
 } from "../components";
-import { useGlobalContext } from "../context/context";
+import {
+  useGlobalContext,
+  fetchAppointments,
+  appoinemts,
+} from "../context/context";
 const Home = () => {
-  const { checkToken, token, url, loading, setLoading, logOut } =
-    useGlobalContext();
+  const {
+    checkToken,
+    token,
+    url,
+    loading,
+    setLoading,
+    logOut,
+    getShopOwoner,
+    owoner,
+  } = useGlobalContext();
   const [activeServices, setActiveServices] = useState([]);
   const [activeStafs, setActiveStafs] = useState([]);
   const navigate = useNavigate();
@@ -46,6 +58,7 @@ const Home = () => {
     checkToken(navigate);
     fetchActiveService();
     fetchActiveStafs();
+    getShopOwoner();
   }, []);
   if (loading) {
     return <Loading />;
@@ -55,7 +68,7 @@ const Home = () => {
       <main className="relative">
         <div className="px-4 py-2">
           <h1 className="text-xl font-poppins text-gray-700 font-semibold">
-            Hello ! Shop Name
+            Hello ! <span className="text-sky-700">{owoner?.shopName}</span>
           </h1>
           {/* Head */}
           <div className="flex mt-5 items-center flex-wrap justify-center gap-2">
@@ -105,16 +118,18 @@ const Home = () => {
               )}
             </div>
           </div>
-          <div className="mt-5">
+          {/* <div className="mt-5">
             <h1 className="text-lg text-black font-semibold font-poppins">
               Today's Appointment
             </h1>
             <div className="flex flex-wrap gap-2 items-center justify-center mt-3">
-              {[1, 2, 3, 4, 5].map((item) => (
-                <AppointmentCard key={item} />
-              ))}
+              {
+              appoinemts.length===0?<h1 className="text-md">No apoinemtns</h1>:appoinemts.map((data,index)=>(
+                <AppointmentCard key={index} data={data} />
+              ))
+              }
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="absolute top-2 right-2">
           <button

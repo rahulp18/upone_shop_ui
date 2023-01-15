@@ -22,7 +22,7 @@ const StafTable = ({ activeStafs }) => {
                   <th>{index + 1}</th>
                   <td>{item.name}</td>
                   <td>{item.number} </td>
-                  <td>Cuttack,Choudwar</td>
+                  <td>Odisha</td>
                 </tr>
               ))}
             </tbody>

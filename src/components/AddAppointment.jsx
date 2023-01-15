@@ -3,6 +3,7 @@ import { useGlobalContext } from "../context/context";
 import axios from "axios";
 import { slot } from "../utils/slot";
 import moment from "moment";
+import { Toaster, toast } from "react-hot-toast";
 const AddAppointment = () => {
   const { url, token, fetchAllStafs, stafData, user, fetchServices, services } =
     useGlobalContext();
@@ -34,9 +35,12 @@ const AddAppointment = () => {
       });
       console.log(res);
       setLoading(false);
+      toast.success("Appointment added successfully");
+      setFormData(initialState);
     } catch (error) {
       console.log(error);
       setLoading(false);
+      toast.error(error?.response?.data);
     }
   };
   useEffect(() => {
@@ -45,6 +49,7 @@ const AddAppointment = () => {
   }, []);
   return (
     <div>
+      <Toaster />
       <input type="checkbox" id="my-modal-4" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box relative">

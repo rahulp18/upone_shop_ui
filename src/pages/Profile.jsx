@@ -70,9 +70,7 @@ const Profile = () => {
           </h1>
           <h1 className="text-md font-normal text-gray-700">
             Location :{" "}
-            <span className="text-black font-semibold capitalize">
-              Hyderabad
-            </span>
+            <span className="text-black font-semibold capitalize">Odisha</span>
           </h1>
 
           <div className="mt-4">

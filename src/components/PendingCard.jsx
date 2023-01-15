@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { MdWifiCalling2 } from "react-icons/md";
@@ -44,6 +45,7 @@ const PendingCard = ({ data }) => {
   if (loading) {
     return <Loading />;
   }
+  console.log(slotInfo);
   return (
     <div className="flex shadow-lg w-[100%] max-w-lg rounded-lg ">
       <div className="basis-1/3 bg-sky-400 text-white px-2 py-4">
