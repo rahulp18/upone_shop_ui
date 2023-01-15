@@ -17,19 +17,12 @@ const AppProvider = ({ children }) => {
   );
   const [owoner, setOwoner] = useState(null);
   const [barber, setBarber] = useState(null);
-  const [slotInfo, setSlotInfo] = useState(null);
 
   const logOut = (navigate) => {
     localStorage.removeItem("token");
     setOwoner("");
     setToken("");
     navigate("/login");
-  };
-
-  const fetchSlotInfo = async () => {
-    try {
-      const res = await axios.get(`${url}/`);
-    } catch (error) {}
   };
 
   const checkToken = async (navigate) => {
@@ -86,6 +79,7 @@ const AppProvider = ({ children }) => {
   };
 
   const fetchSingleStaf = async (id) => {
+    console.log(id);
     try {
       setLoading(true);
       const res = await axios.get(`${url}/staf/${id}`);
@@ -110,6 +104,32 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  const [services, setServices] = useState([]);
+  const fetchServices = async () => {
+    try {
+      setLoading(true);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const res = await axios.get(`${url}/service/saloon/active`);
+      setServices(res.data.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  const [slotInfo, setSlotInfo] = useState(null);
+  const fetchSlotInfo = async (id) => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${url}/slotsInfo/${id}`);
+      setSlotInfo(res.data.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
   return (
     <AppContext.Provider
       value={{
@@ -132,6 +152,10 @@ const AppProvider = ({ children }) => {
         barber,
         fetchShopInfo,
         shopInfo,
+        fetchServices,
+        services,
+        fetchSlotInfo,
+        slotInfo,
       }}
     >
       {children}

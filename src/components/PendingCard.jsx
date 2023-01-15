@@ -4,14 +4,23 @@ import { toast } from "react-hot-toast";
 import { MdWifiCalling2 } from "react-icons/md";
 import { RiShareCircleFill } from "react-icons/ri";
 import { useGlobalContext } from "../context/context";
+import { slot } from "../utils/slot";
 import Loading from "./Loading";
 
 const PendingCard = ({ data }) => {
-  const { fetchSingleStaf, barber, loading, url, fetchAppointments } =
-    useGlobalContext();
-  console.log(data);
+  const {
+    fetchSingleStaf,
+    barber,
+    loading,
+    url,
+    fetchAppointments,
+    fetchSlotInfo,
+    slotInfo,
+  } = useGlobalContext();
+
   useEffect(() => {
     fetchSingleStaf(data.stafId);
+    fetchSlotInfo(data.slots);
   }, []);
 
   const [updating, setUpdating] = useState(false);
@@ -31,7 +40,7 @@ const PendingCard = ({ data }) => {
       setUpdating(false);
     }
   };
-
+  console.log(data);
   if (loading) {
     return <Loading />;
   }
@@ -39,8 +48,17 @@ const PendingCard = ({ data }) => {
     <div className="flex shadow-lg w-[100%] max-w-lg rounded-lg ">
       <div className="basis-1/3 bg-sky-400 text-white px-2 py-4">
         <div className="flex items-center justify-center h-full gap-3 flex-col">
-          <h1 className="text-xl font-semibold font-roboto ">12 Dec</h1>
-          <h1 className="text-sm font-normal font-roboto ">10 AM</h1>
+          <h1 className="text-xl font-semibold font-roboto ">
+            {slotInfo?.slot_date}
+          </h1>
+          <h1 className="text-sm font-normal font-roboto ">
+            {" "}
+            {
+              slot.filter(function (el) {
+                return el.slot_time == slotInfo?.slot_time;
+              })[0]?.time
+            }
+          </h1>
         </div>
       </div>
 

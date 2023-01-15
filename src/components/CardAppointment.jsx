@@ -1,9 +1,11 @@
 import axios from "axios";
+import moment from "moment";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { MdWifiCalling2 } from "react-icons/md";
 import { RiShareCircleFill } from "react-icons/ri";
 import { useGlobalContext } from "../context/context";
+import { slot } from "../utils/slot";
 import Loading from "./Loading";
 
 const CardAppointment = ({ data }) => {
@@ -15,14 +17,17 @@ const CardAppointment = ({ data }) => {
     fetchAppointments,
     fetchShopInfo,
     shopInfo,
+    fetchSlotInfo,
+    slotInfo,
   } = useGlobalContext();
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
     fetchSingleStaf(data.stafId);
     fetchShopInfo(data.shopId);
+    fetchSlotInfo(data.slots);
   }, []);
-
+  console.log(slotInfo);
   const handleRequest = async (id, status) => {
     console.log(status);
     try {
@@ -42,12 +47,21 @@ const CardAppointment = ({ data }) => {
   // if (updating) {
   //   return <Loading />;
   // }
+
   return (
     <div className="flex shadow-lg w-[100%] max-w-lg rounded-lg ">
       <div className="basis-1/3 bg-sky-400 text-white px-2 py-4">
         <div className="flex items-center justify-center h-full gap-3 flex-col">
-          <h1 className="text-xl font-semibold font-roboto ">12 Dec</h1>
-          <h1 className="text-sm font-normal font-roboto ">10 AM</h1>
+          <h1 className="text-xl font-semibold font-roboto ">
+            {slotInfo?.slot_date}
+          </h1>
+          <h1 className="text-sm font-normal font-roboto ">
+            {
+              slot.filter(function (el) {
+                return el.slot_time == slotInfo?.slot_time;
+              })[0]?.time
+            }
+          </h1>
         </div>
       </div>
 

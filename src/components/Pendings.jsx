@@ -8,6 +8,7 @@ const Pendings = () => {
   // if (loading) {
   //   return <Loading />;
   // }
+  console.log(appoinemts);
   return (
     <div>
       <h1 className="relative text-md font-semibold text-black">
@@ -17,7 +18,7 @@ const Pendings = () => {
         <h1 className="text-md">No appoinemts.</h1>
       ) : (
         <div className="mt-5 flex flex-col items-center justify-center gap-3">
-          {appoinemts?.map((item, index) => (
+          {appoinemts.map((item, index) => (
             <PendingCard key={index} data={item} />
           ))}
         </div>

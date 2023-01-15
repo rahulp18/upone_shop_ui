@@ -11,7 +11,8 @@ import {
 } from "../components";
 import { useGlobalContext } from "../context/context";
 const Home = () => {
-  const { checkToken, token, url, loading, setLoading } = useGlobalContext();
+  const { checkToken, token, url, loading, setLoading, logOut } =
+    useGlobalContext();
   const [activeServices, setActiveServices] = useState([]);
   const [activeStafs, setActiveStafs] = useState([]);
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ const Home = () => {
   }
   return (
     <Layout select="dashboard">
-      <main>
+      <main className="relative">
         <div className="px-4 py-2">
           <h1 className="text-xl font-poppins text-gray-700 font-semibold">
             Hello ! Shop Name
@@ -114,6 +115,14 @@ const Home = () => {
               ))}
             </div>
           </div>
+        </div>
+        <div className="absolute top-2 right-2">
+          <button
+            className="text-md font-roboto bg-red-600 cursor-pointer text-white px-2 py-[2px] rounded-md shadow-sm"
+            onClick={() => logOut(navigate)}
+          >
+            Logout
+          </button>
         </div>
       </main>
     </Layout>
