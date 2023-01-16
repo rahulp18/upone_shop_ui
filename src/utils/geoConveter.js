@@ -1,6 +1,6 @@
 import Geocode from "react-geocode";
 
-Geocode.setApiKey("AIzaSyCstQ6WsHHO_0pYDL-oUmWtUJuXSB8qMUo");
+Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 
 Geocode.setLanguage("en");
 
@@ -16,6 +16,7 @@ export const fromLngToAddress = ({ lat, lng }) => {
     (response) => {
       const address = response.results[0].formatted_address;
       console.log(address);
+      return address;
     },
     (error) => {
       console.error(error);
@@ -27,6 +28,7 @@ export const addToLat = (address) => {
     (response) => {
       const { lat, lng } = response.results[0].geometry.location;
       console.log(lat, lng);
+      fromLngToAddress({ lat, lng });
     },
     (error) => {
       console.error(error);

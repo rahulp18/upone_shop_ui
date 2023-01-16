@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Toaster } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 import { BsCameraFill } from "react-icons/bs";
 import { MdEdit } from "react-icons/md";
 import {
@@ -17,7 +17,6 @@ const Profile = () => {
   const { token, url, setLoading, loading, checkToken, getShopOwoner, owoner } =
     useGlobalContext();
   const [services, setServices] = useState([]);
-
   const fetchService = async () => {
     try {
       setLoading(true);
@@ -30,6 +29,7 @@ const Profile = () => {
       console.log(error);
     }
   };
+
   useEffect(() => {
     checkToken();
     getShopOwoner();
@@ -70,7 +70,9 @@ const Profile = () => {
           </h1>
           <h1 className="text-md font-normal text-gray-700">
             Location :{" "}
-            <span className="text-black font-semibold capitalize">Odisha</span>
+            <span className="text-black font-semibold capitalize">
+              {owoner?.location}
+            </span>
           </h1>
 
           <div className="mt-4">

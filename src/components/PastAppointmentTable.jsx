@@ -25,8 +25,8 @@ const PastAppointmentTable = ({ componentRef }) => {
                 <td>{item.name}</td>
                 <td>{item.phone}</td>
                 <td>{item?.services.toString()}</td>
-                <td>Chandan Hema</td>
-                <td>120</td>
+                <td>{item?.stafId}</td>
+                <td>{item?.price}</td>
                 <td>20/03/2023</td>
               </tr>
             ))}

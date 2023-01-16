@@ -6,7 +6,7 @@ const AppContext = createContext();
 const AppProvider = ({ children }) => {
   // States
 
-//   const url = "http://localhost:5000/api";
+  // const url = "http://localhost:5000/api";
   const url = "https://up-onebackend-production.up.railway.app/api";
   const [loading, setLoading] = useState(false);
   const [appoinemts, setAppoinemts] = useState([]);

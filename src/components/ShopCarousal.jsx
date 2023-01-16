@@ -29,7 +29,7 @@ const ShopCarousal = ({ slides }) => {
       >
         {slides.map((image) => (
           <div key={image?.url}>
-            <img className="w-full object-cover max-h-md" src={image.url} />
+            <img className="w-full object-cover  max-h-md" src={image.url} />
           </div>
         ))}
       </Carousel>

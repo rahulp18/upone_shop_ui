@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { Loading, MobileNumberInput } from "../components";
 import { useGlobalContext } from "../context/context";
+import { toast } from "react-hot-toast";
 const Login = () => {
   const initialState = {
     phone: "",
@@ -24,6 +25,7 @@ const Login = () => {
       navigate("/verifyotp");
     } catch (error) {
       console.log(error);
+      toast.error(error?.response?.data?.message);
       setLoading(false);
     }
   };
@@ -63,9 +65,15 @@ const Login = () => {
             >
               {loading ? <Loading /> : "Get otp"}
             </button>
-            <button className="btn btn-outline w-full text-md max-w-sm text-sky-500 ">
-              Continue With Google
-            </button>
+            <h1 className="text-sm font-roboto text-gray-400">
+              Don't have an account !{" "}
+              <span
+                className="text-sky-600 font-semibold cursor-pointer"
+                onClick={() => navigate("/signup")}
+              >
+                Register
+              </span>
+            </h1>
           </div>
         </div>
       </div>

@@ -145,9 +145,9 @@ const SignUp = () => {
                 <BsCameraFill className="mx-1" /> Choose Image
               </label>
             </div>
-            <div className="flex mt-3  flex-wrap gap-2 items-center">
-              {renderPhotos(selectedFiles)}
-            </div>
+          </div>
+          <div className="flex mt-3  flex-wrap gap-2 items-center">
+            {renderPhotos(selectedFiles)}
           </div>
           <button className="btn btn-outline  w-full text-[16px] py-2 max-w-sm  mt-6">
             {loading ? <Loading /> : "Get Otp"}
