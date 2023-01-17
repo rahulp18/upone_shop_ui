@@ -9,18 +9,52 @@ import { slot } from "../utils/slot";
 import Loading from "./Loading";
 
 const PendingCard = ({ data }) => {
-  const {
-    fetchSingleStaf,
-    barber,
-    loading,
-    url,
-    fetchAppointments,
-    fetchSlotInfo,
-    slotInfo,
-  } = useGlobalContext();
+  const { url, fetchAppointments } = useGlobalContext();
+
+  const [loading, setLoading] = useState(false);
+  const [barber, setBarber] = useState();
+  const [shopInfo, setShopInfo] = useState();
+
+  const [slotInfo, setSlotInfo] = useState(null);
+  const fetchSlotInfo = async (id) => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${url}/slotsInfo/${id}`);
+      setSlotInfo(res.data.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+  const fetchShopInfo = async (id) => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${url}/shop/${id}`);
+      console.log(res);
+      setShopInfo(res.data.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+  const fetchSingleStaf = async (id) => {
+    console.log(id);
+    try {
+      setLoading(true);
+      const res = await axios.get(`${url}/staf/${id}`);
+      setBarber(res.data.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     fetchSingleStaf(data.stafId);
+    fetchShopInfo(data.shopId);
     fetchSlotInfo(data.slots);
   }, []);
 

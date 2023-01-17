@@ -82,18 +82,18 @@ const Home = () => {
                 {new Date().toLocaleDateString()}
               </p>
             </div>
-            <div className="px-3 py-2 rounded-lg shadow-sm flex flex-col items-center justify-center bg-sky-600 text-white">
+            {/* <div className="px-3 py-2 rounded-lg shadow-sm flex flex-col items-center justify-center bg-sky-600 text-white">
               <h1 className="text-sm font-light capitalize">
                 Appointments Request
               </h1>
               <p className="text-lg font-semibold">5</p>
-            </div>
+            </div> */}
           </div>
 
           {/* Staf List */}
           <div className="mt-5">
             <h1 className="text-lg text-black font-semibold font-poppins">
-              My Stafs
+              Today's active stafs
             </h1>
             <div className="mt-5">
               <StafTable activeStafs={activeStafs} />
@@ -102,7 +102,7 @@ const Home = () => {
           {/* Services */}
           <div className="mt-5">
             <h1 className="text-lg text-black font-semibold font-poppins">
-              Our Services
+              Today's available Services
             </h1>
             <div className="flex flex-wrap gap-3 mt-5">
               {activeServices.length === 0 ? (
