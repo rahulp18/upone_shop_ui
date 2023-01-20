@@ -1,24 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 import { MdOutlineGpsFixed } from "react-icons/md";
-import { BiSearchAlt } from "react-icons/bi";
+import { ImLocation2 } from "react-icons/im";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useGlobalContext } from "../context/context";
 import { Loading } from "../components";
 import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
+import { addToLat } from "../utils/geoConveter";
+import { toast } from "react-hot-toast";
 const ChooseLocation = () => {
   const navigate = useNavigate();
   const { token, url, setLoading, loading, checkToken } = useGlobalContext();
   const [location, setLocation] = useState("");
+  const initialState = {
+    lat: "",
+    lng: "",
+  };
+  const [geoLocation, setGeoLocation] = useState(initialState);
+  const getCurrentLocation = async (e) => {
+    e.preventDefault();
 
-  const getCurrentLocation = async () => {
+    console.log(geoLocation);
     try {
       setLoading(true);
       console.log(location);
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       const res = await axios.put(`${url}/shop/location/update`, {
         location: location,
+        geo: geoLocation,
       });
       console.log(res);
       navigate("/overview");
@@ -27,6 +37,10 @@ const ChooseLocation = () => {
       console.log(error);
       setLoading(false);
     }
+  };
+
+  const findLocation = () => {
+    addToLat(location, setGeoLocation, geoLocation);
   };
   useEffect(() => {
     checkToken();
@@ -62,24 +76,44 @@ const ChooseLocation = () => {
             className="w-auto h-[13rem] object-cover"
           />
         </div>
-        <div className="flex flex-col mt-8 items-center justify-center">
-          <div className=" my-2 border-2 gap-3 flex items-center justify-start mt-5 border-sky-500 rounded-lg px-4 py-1 w-full max-w-sm">
-            <BiSearchAlt />
 
-            <input
-              placeholder="Enter Your location"
-              type="text"
-              className="text-lg placeholder-slate-600 w-full"
-              onChange={(e) => setLocation(e.target.value)}
-            />
-          </div>
-          <button
-            onClick={getCurrentLocation}
-            className="btn w-full flex items-center gap-2 justify-center max-w-sm text-lg capitalize bg-sky-500 border-none transition-all duration-100 hover:bg-sky-600"
-          >
-            <MdOutlineGpsFixed className="text-xl" />
-            {loading ? <Loading /> : "Your Current Location"}
-          </button>
+        <div className="flex flex-col mt-8 items-center justify-center">
+          <h1 className="text-md font-roboto">
+            Already given{" "}
+            <span
+              onClick={() => navigate("/dashboard")}
+              className="text-sky-600 font-semibold cursor-pointer "
+            >
+              Skip
+            </span>{" "}
+          </h1>
+          <form action="" onSubmit={getCurrentLocation}>
+            <div className=" my-2 border-2 gap-3 flex items-center justify-start mt-5 border-sky-500 rounded-lg pl-4  w-full max-w-sm">
+              <ImLocation2 />
+
+              <input
+                placeholder="Enter Your location"
+                type="text"
+                required
+                className="text-lg placeholder-slate-600 w-full"
+                onChange={(e) => setLocation(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={findLocation}
+                className="bg-sky-500 rounded-tr-lg font-semibold text-white px-4 py-2 "
+              >
+                Find
+              </button>
+            </div>
+            <button
+              type="submit"
+              className="btn w-full flex items-center gap-2 justify-center max-w-sm text-lg capitalize bg-sky-500 border-none transition-all duration-100 hover:bg-sky-600"
+            >
+              <MdOutlineGpsFixed className="text-xl" />
+              {loading ? <Loading /> : "Let's go!"}
+            </button>
+          </form>
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ const EditShop = ({ owoner }) => {
   const initialState = {
     shopName: owoner?.shopName,
     number: owoner?.number,
-    location: owoner?.location,
+    email: owoner?.email,
   };
 
   const { url, token, getShopOwoner } = useGlobalContext();
@@ -94,17 +94,17 @@ const EditShop = ({ owoner }) => {
                     for="location"
                     className="block text-sm font-semibold text-gray-800"
                   >
-                    location<span className="text-red-600">*</span>
+                    Email<span className="text-red-600">*</span>
                   </label>
                   <input
-                    type="text"
-                    name="location"
+                    type="email"
+                    name="email"
                     required
-                    value={formData.location}
+                    value={formData.email}
                     onChange={handleChange}
                     className="input input-bordered text-black  w-full max-w-xs input-sm"
-                    id="location"
-                    placeholder="ex- Marcket Complex,Cdr,754025"
+                    id="email"
+                    placeholder="ex- gh@gmail.com"
                   ></input>
                 </div>
               </div>
