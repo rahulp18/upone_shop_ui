@@ -13,3 +13,4 @@ export { default as Past } from "./Past";
 export { default as ShopCarousal } from "./ShopCarousal";
 export { default as CreateServices } from "./CreateServices";
 export { default as ServiceCard } from "./ServiceCard";
+export { default as EditImageStaf } from "./EditImageStaf";

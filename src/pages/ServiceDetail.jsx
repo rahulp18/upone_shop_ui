@@ -28,6 +28,7 @@ const ServiceDetail = () => {
   if (loading) {
     return <Loading />;
   }
+  console.log(serviceInfo);
   return (
     <div className="h-screen">
       <div className="p-1 bg-white z-50 rounded-full w-7 h-7 absolute top-1 left-1 text-black flex items-center justify-center cursor-pointer">
@@ -39,7 +40,7 @@ const ServiceDetail = () => {
       <div className="w-[100%] h-[216px] bg-black group relative  overflow-hidden ">
         <img
           className="w-full h-full object-cover opacity-75"
-          src={serviceInfo?.image}
+          src={serviceInfo?.image?.url}
           alt="images"
         />
         <div className="p-1 bg-sky-600 z-50 rounded-full w-7 h-7 absolute bottom-1 right-1 text-white flex items-center justify-center cursor-pointer">

@@ -13,7 +13,7 @@ const StafTable = ({ activeStafs }) => {
                 <th></th>
                 <th>Name</th>
                 <th>Phone</th>
-                <th>Address</th>
+                <th>Skills</th>
               </tr>
             </thead>
             <tbody>
@@ -22,7 +22,7 @@ const StafTable = ({ activeStafs }) => {
                   <th>{index + 1}</th>
                   <td>{item.name}</td>
                   <td>{item.number} </td>
-                  <td>Odisha</td>
+                  <td>{item.skills.toString()}</td>
                 </tr>
               ))}
             </tbody>

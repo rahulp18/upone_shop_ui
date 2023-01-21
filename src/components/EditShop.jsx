@@ -9,7 +9,7 @@ const EditShop = ({ owoner }) => {
     number: owoner?.number,
     email: owoner?.email,
   };
-
+  console.log(owoner);
   const { url, token, getShopOwoner } = useGlobalContext();
   const [formData, setFormData] = useState(initialState);
   const [loading, setLoading] = useState(false);

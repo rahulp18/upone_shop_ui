@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 import { MdEdit } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
-import { EditStaf, Loading } from "../components";
+import { EditImageStaf, EditStaf, Loading } from "../components";
 import { useGlobalContext } from "../context/context";
 const StafDetail = () => {
   const navigate = useNavigate();
@@ -29,6 +29,7 @@ const StafDetail = () => {
   if (loading) {
     return <Loading />;
   }
+
   return (
     <div className="h-screen">
       <div className="p-1 bg-white z-50 rounded-full w-7 h-7 absolute top-1 left-1 text-black flex items-center justify-center cursor-pointer">
@@ -40,20 +41,28 @@ const StafDetail = () => {
       <div className="w-[100%] h-[216px] bg-black group relative  overflow-hidden ">
         <img
           className="w-full h-full object-cover opacity-75"
-          src={stafInfo?.image}
+          src={stafInfo?.image?.url}
           alt="images"
         />
-        <div className="p-1 bg-sky-600 z-50 rounded-full w-7 h-7 absolute bottom-1 right-1 text-white flex items-center justify-center cursor-pointer">
-          <label htmlFor="editStaf">
+        <div className="p-1 bg-sky-600 z-50 rounded-full w-7 h-7 absolute top-1 right-1 text-white flex items-center justify-center cursor-pointer">
+          <label htmlFor="editImageStaf">
             {" "}
             <MdEdit className="text-xl font-bold" />
           </label>
         </div>
+
         {stafInfo !== null && (
           <EditStaf staf={stafInfo} fetchStafInfo={fetchStafInfo} />
         )}
       </div>
       <div className="mt-4 flex flex-col gap-2 px-4 font-roboto">
+        <div className="p-1 bg-sky-600 z-50 rounded-sm px-2 py-[1px]  absolute right-2   text-white flex items-center justify-center cursor-pointer">
+          <label htmlFor="editStaf" className="flex items-center gap-1">
+            {" "}
+            Edit <MdEdit className="text-xl font-bold" />
+          </label>
+        </div>
+        <EditImageStaf data={stafInfo} id={id} fetchStafInfo={fetchStafInfo} />
         <h1 className="text-md font-normal text-gray-900">
           Staf Name :{" "}
           <span className="font-semibold text-black">{stafInfo?.name}</span>{" "}

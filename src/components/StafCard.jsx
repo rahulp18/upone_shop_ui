@@ -23,7 +23,7 @@ const StafCard = ({ staf }) => {
   const navigate = useNavigate();
   return (
     <div className="w-full md-w-[300px] shadow-md max-w-md">
-      <img src={staf.image} className="w-full object-cover h-[150px]" />
+      <img src={staf.image.url} className="w-full object-cover h-[150px]" />
       <div className="px-2 py-1 flex  flex-col gap-1">
         <div className="flex justify-between items-center  ">
           <h1 className="text-md font-semibold">{staf.name}</h1>

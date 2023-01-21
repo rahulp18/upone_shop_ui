@@ -30,7 +30,7 @@ const ServiceCard = ({ data, fetchService, fetchActiveService }) => {
     <div className="relative flex items-center justify-center w-auto ">
       <div className="h-20 w-20 rounded-full overflow-hidden absolute left-0 p-[2px] border-2 bg-white border-gray-400">
         <img
-          src={data.image}
+          src={data.image.url}
           alt="services"
           className="h-full w-full rounded-full object-cover "
         />

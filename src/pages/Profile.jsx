@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { BsCameraFill } from "react-icons/bs";
 import { MdEdit } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import {
   CreateServices,
   EditService,
@@ -14,6 +15,7 @@ import EditShop from "../components/EditShop";
 import { useGlobalContext } from "../context/context";
 
 const Profile = () => {
+  const navigate = useNavigate();
   const { token, url, setLoading, loading, checkToken, getShopOwoner, owoner } =
     useGlobalContext();
   const [services, setServices] = useState([]);
@@ -74,7 +76,15 @@ const Profile = () => {
               {owoner?.location}
             </span>
           </h1>
-
+          <h1 className="text-sm font-normal text-black">
+            Want to change Location ?{" "}
+            <span
+              onClick={() => navigate("/location")}
+              className="text-sky-500 font-semibold capitalize"
+            >
+              click here
+            </span>
+          </h1>
           <div className="mt-4">
             <div className="my-5 flex justify-between items-center">
               <h1 className="text-md font-semibold text-gray-700">
