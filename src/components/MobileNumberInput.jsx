@@ -8,6 +8,7 @@ const MobileNumberInput = ({ setFormData, formData }) => {
     <PhoneInput
       placeholder="Enter phone number"
       value={formData.phone}
+      defaultCountry="IN"
       onChange={(e) => setFormData({ ...formData, phone: e })}
       className="text-md max-w-xs input input-bordered shadow-sm"
     />
